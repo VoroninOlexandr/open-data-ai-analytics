@@ -1,0 +1,62 @@
+name: Python Data Pipeline CI
+
+on:
+  push:
+    branches: [ master]
+  pull_request:
+    branches: [ master]
+  workflow_dispatch:
+    inputs:
+      module:
+        description: "Which module to run (or 'all')"
+        required: true
+        default: "all"
+        type: choice
+        options:
+          - all
+          - data_load
+          - data_quality_analysis
+          - data_research
+          - visualization
+
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module: [data_load, data_quality_analysis, data_research, visualization]
+
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.module == 'all' || github.event.inputs.module == matrix.module }}
+
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v4
+
+          - name: Set up Python
+            uses: actions/setup-python@v5
+            with:
+              python-version: '3.10'
+
+          - name: Install dependencies
+            run: |
+              python -m pip install --upgrade pip
+              pip install pandas matplotlib
+
+          - name: Run module
+            run: |
+              # Запуск обраного модуля (або всіх за замовчуванням)
+              python src/${{ matrix.module }}.py
+            env:
+              # Додаємо шлях, щоб Python бачив файли в папці src
+              PYTHONPATH: .
+
+          - name: Upload Artifacts
+            uses: actions/upload-artifact@v4
+            with:
+              name: results-${{ matrix.module }}
+              path: |
+                data/*.png
+                data/*.csv
+                *.log
+              if-no-files-found: ignore
