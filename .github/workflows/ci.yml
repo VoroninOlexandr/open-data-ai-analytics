@@ -27,10 +27,7 @@ jobs:
       matrix:
         module: [data_load, data_quality_analysis, data_research, visualization]
 
-    if: >
-      github.event_name != 'workflow_dispatch' || 
-      github.event.inputs.module == 'all' || 
-      github.event.inputs.module == matrix.module
+
 
     steps:
       - name: Checkout code
@@ -47,14 +44,16 @@ jobs:
           pip install pandas matplotlib
 
       - name: Run module
+
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.module == 'all' || github.event.inputs.module == matrix.module }}
         run: |
-          # Запуск обраного модуля (або всіх за замовчуванням)
           python src/${{ matrix.module }}.py
         env:
-          
           PYTHONPATH: .
 
       - name: Upload Artifacts
+        
+        if: ${{ success() && (github.event_name != 'workflow_dispatch' || github.event.inputs.module == 'all' || github.event.inputs.module == matrix.module) }}
         uses: actions/upload-artifact@v4
         with:
           name: results-${{ matrix.module }}
