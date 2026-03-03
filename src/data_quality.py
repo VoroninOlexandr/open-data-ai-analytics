@@ -16,5 +16,13 @@ def check_quality(file_path):
     print(df.dtypes)
 
 
+import os
+
 if __name__ == "__main__":
-    check_quality("../data/registerbeer.csv")
+
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(current_dir)
+
+    csv_path = os.path.join(project_root, 'data', 'registerbeer.csv')
+
+    check_quality(csv_path)

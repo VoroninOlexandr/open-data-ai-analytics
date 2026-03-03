@@ -39,8 +39,13 @@ def research_data(file_path):
         f"- Прострочених: {expired_count} із {total_companies} ({expired_count / total_companies * 100:.1f}%)")
 
 
-
+import os
 
 if __name__ == "__main__":
 
-    research_data("../data/registerbeer.csv")
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(current_dir)
+
+    csv_path = os.path.join(project_root, 'data', 'registerbeer.csv')
+
+    research_data(csv_path)
