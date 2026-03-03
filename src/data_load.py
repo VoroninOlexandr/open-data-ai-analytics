@@ -12,16 +12,12 @@ def load_local_data(file_path):
         print(f"Помилка при читанні файлу: {e}")
         return None
 
-
+import os
 if __name__ == "__main__":
-    FILE_PATH = "../data/registerbeer.csv"
+
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(current_dir)
+    FILE_PATH = os.path.join(project_root, 'data', 'registerbeer.csv')
+
 
     df = load_local_data(FILE_PATH)
-
-    if df is not None:
-
-        pd.set_option('display.max_columns', None)
-        pd.set_option('display.max_rows', 15)
-        pd.set_option('display.width', 1000)
-
-        print(df.head(15))
