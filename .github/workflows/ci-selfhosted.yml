@@ -29,6 +29,7 @@ jobs:
           python src/data_load.py > local_run.log
         env:
           PYTHONPATH: .
+          PYTHONIOENCODING: utf-8
 
       - name: Upload Local Artifact
         uses: actions/upload-artifact@v4
