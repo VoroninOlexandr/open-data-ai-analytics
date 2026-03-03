@@ -1,0 +1,37 @@
+name: Local Self-Hosted Runner CI
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  run-locally:
+
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas matplotlib
+
+      - name: Run Data Load locally
+        run: |
+          python src/data_load.py > local_run.log
+        env:
+          PYTHONPATH: .
+
+      - name: Upload Local Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: local-result
+          path: local_run.log

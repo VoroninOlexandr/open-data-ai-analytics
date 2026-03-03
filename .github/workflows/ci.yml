@@ -15,7 +15,7 @@ on:
         options:
           - all
           - data_load
-          - data_quality        
+          - data_quality
           - data_research
           - visualization
 
