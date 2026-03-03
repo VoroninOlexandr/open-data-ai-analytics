@@ -56,6 +56,14 @@ def create_visualizations(file_path):
     plt.show()
 
 
+
+
 if __name__ == "__main__":
-    csv_path = "../data/registerbeer.csv"
-    create_visualizations(csv_path)
+
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(current_dir)
+    save_path = os.path.join(project_root, 'data', 'visual_report.png')
+
+
+    plt.savefig(save_path, bbox_inches='tight')
+    print(f"Візуалізацію збережено у: {save_path}")

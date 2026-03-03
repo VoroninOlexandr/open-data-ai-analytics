@@ -15,7 +15,7 @@ on:
         options:
           - all
           - data_load
-          - data_quality_analysis
+          - data_quality        
           - data_research
           - visualization
 
@@ -26,8 +26,6 @@ jobs:
       fail-fast: false
       matrix:
         module: [data_load, data_quality, data_research, visualization]
-
-
 
     steps:
       - name: Checkout code
@@ -44,21 +42,20 @@ jobs:
           pip install pandas matplotlib
 
       - name: Run module
-
         if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.module == 'all' || github.event.inputs.module == matrix.module }}
         run: |
-          python src/${{ matrix.module }}.py
+          
+          python src/${{ matrix.module }}.py > ${{ matrix.module }}_output.log
         env:
           PYTHONPATH: .
 
       - name: Upload Artifacts
-
         if: ${{ success() && (github.event_name != 'workflow_dispatch' || github.event.inputs.module == 'all' || github.event.inputs.module == matrix.module) }}
         uses: actions/upload-artifact@v4
         with:
           name: results-${{ matrix.module }}
           path: |
             data/*.png
-            data/*.csv
             *.log
+
           if-no-files-found: ignore
