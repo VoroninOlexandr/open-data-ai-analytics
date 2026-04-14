@@ -14,7 +14,7 @@ CSV_PATH = '/app/data/registerbeer.csv'
 
 
 def load_data():
-    print("Очікування готовності бази даних...")
+    print("Очікування готовності бази даних")
     time.sleep(5)
 
     try:

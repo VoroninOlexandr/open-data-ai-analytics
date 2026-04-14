@@ -11,7 +11,7 @@ REPORT_PATH = '/app/reports/quality_report.txt'
 
 
 def analyze_quality():
-    print("⏳ Очікування завантаження даних...")
+    print("Очікування завантаження даних")
     time.sleep(10)
     try:
         engine = create_engine(f'postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:5432/{DB_NAME}')

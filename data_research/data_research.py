@@ -11,7 +11,7 @@ REPORT_PATH = '/app/reports/research_report.txt'
 
 
 def conduct_research():
-    print("⏳ Очікування завантаження даних...")
+    print("Очікування завантаження даних")
     time.sleep(12)
     try:
         engine = create_engine(f'postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:5432/{DB_NAME}')
