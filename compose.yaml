@@ -1,0 +1,104 @@
+services:
+
+  db:
+    image: postgres:15-alpine
+    container_name: analytics_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secretpassword
+      POSTGRES_DB: beer_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d beer_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+
+  data_load:
+    build: ./data_load
+    container_name: service_data_load
+    volumes:
+      - ./data:/app/data
+    environment:
+      DB_HOST: db
+      DB_USER: admin
+      DB_PASS: secretpassword
+      DB_NAME: beer_db
+    depends_on:
+      db:
+        condition: service_healthy
+
+
+  data_quality:
+    build: ./data_quality
+    container_name: service_data_quality
+    volumes:
+      - shared_reports:/app/reports
+    environment:
+      DB_HOST: db
+      DB_USER: admin
+      DB_PASS: secretpassword
+      DB_NAME: beer_db
+    depends_on:
+      data_load:
+        condition: service_completed_successfully
+
+
+  data_research:
+    build: ./data_research
+    container_name: service_data_research
+    volumes:
+      - shared_reports:/app/reports
+    environment:
+      DB_HOST: db
+      DB_USER: admin
+      DB_PASS: secretpassword
+      DB_NAME: beer_db
+    depends_on:
+      data_load:
+        condition: service_completed_successfully
+
+
+  visualization:
+    build: ./visualization
+    container_name: service_visualization
+    volumes:
+      - shared_plots:/app/plots
+    environment:
+      DB_HOST: db
+      DB_USER: admin
+      DB_PASS: secretpassword
+      DB_NAME: beer_db
+    depends_on:
+      data_load:
+        condition: service_completed_successfully
+
+
+  web:
+    build: ./web
+    container_name: service_web
+    ports:
+      - "5000:5000"
+    volumes:
+      - shared_reports:/app/reports
+      - shared_plots:/app/static/plots
+    environment:
+      DB_HOST: db
+      DB_USER: admin
+      DB_PASS: secretpassword
+      DB_NAME: beer_db
+    depends_on:
+      data_quality:
+        condition: service_completed_successfully
+      visualization:
+        condition: service_completed_successfully
+
+
+volumes:
+  pgdata:
+  shared_reports:
+  shared_plots:
