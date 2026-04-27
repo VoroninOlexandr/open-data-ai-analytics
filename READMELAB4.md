@@ -16,7 +16,7 @@ Open Data AI Analytics - Infrastructure
 Як виконати розгортання (Terraform Apply)
 Перейдіть у папку з проєктом та запустіть процес створення інфраструктури:
 
-```bash
+
 # Ініціалізація Terraform
 terraform init
 
