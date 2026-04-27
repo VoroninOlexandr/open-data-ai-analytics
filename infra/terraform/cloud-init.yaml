@@ -17,3 +17,8 @@ runcmd:
   
   - cd /home/azureuser/app
   - docker compose up --build -d
+
+  # Запускаємо мікросервіси та моніторинг
+  - cd /home/azureuser/app
+  - docker compose up --build -d
+  - docker compose -f docker-compose.monitoring.yml up -d
