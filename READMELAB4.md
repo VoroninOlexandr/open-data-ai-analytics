@@ -1,15 +1,36 @@
-# Open Data AI Analytics - Infrastructure
+Open Data AI Analytics - Infrastructure
 
-Цей проект містить конфігурацію Terraform для автоматичного розгортання інфраструктури в Azure.
+Цей репозиторій містить конфігурацію Terraform для автоматичного розгортання хмарної інфраструктури в Azure.
 
-## Склад інфраструктури:
-* **VM:** Standard_D2s_v3 (Ubuntu 22.04)
-* **Регіон:** North Europe
-* **Автоматизація:** Docker & Docker Compose встановлюються автоматично через cloud-init.
+## Склад системи
+* **VM:** Standard_D2s_v3 (Ubuntu 22.04 LTS)
+* **Регіон:** North Europe (northeurope)
+* **Автоматизація:** Docker та Docker Compose встановлюються автоматично через скрипт `cloud-init`.
+* **Додаток:** Веб-інтерфейс аналітики на порту 5000.
 
-## Як запустити:
-1. `terraform init`
-2. `terraform apply -auto-approve`
+---
 
-## Результат:
-Веб-інтерфейс доступний за адресою `http://40.112.90.119:5000`
+Інструкція з використання
+
+
+Як виконати розгортання (Terraform Apply)
+Перейдіть у папку з проєктом та запустіть процес створення інфраструктури:
+
+```bash
+# Ініціалізація Terraform
+terraform init
+
+# Створення ресурсів
+terraform apply -auto-approve
+
+
+ Як перевірити результат
+Після успішного завершення команди Terraform виведе у консоль вашу публічну IP-адресу (public_ip_address).
+
+Скопіюйте цю IP-адресу.
+
+Відкрийте браузер і введіть: http://40.112.90.119:5000/
+
+Як виконати видалення
+
+terraform destroy -auto-approve
