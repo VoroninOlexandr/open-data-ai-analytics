@@ -1,0 +1,19 @@
+#cloud-config
+package_upgrade: true
+packages:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - software-properties-common
+  - git
+
+runcmd:
+  # Встановлюємо Docker
+  - curl -fsSL https://get.docker.com -o get-docker.sh
+  - sh get-docker.sh
+  
+  - git clone https://github.com/VoroninOlexandr/open-data-ai-analytics.git /home/azureuser/app
+  - chown -R azureuser:azureuser /home/azureuser/app
+  
+  - cd /home/azureuser/app
+  - docker compose up --build -d
