@@ -20,3 +20,16 @@ spec:
         image: mantixxx/my-web-app:v1
         ports:
         - containerPort: 5000
+        env:
+        - name: DB_HOST
+          value: "db"
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_NAME
+          value: "mydatabase"
+        - name: DB_USER
+          value: "user"
+        - name: DB_PASSWORD
+          value: "password"
+        - name: DATABASE_URL
+          value: "postgresql://user:password@db:5432/mydatabase"
